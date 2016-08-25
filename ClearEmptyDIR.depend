@@ -13,3 +13,17 @@
 	<richedit.h>
 	"resource.h"
 
+1472134288 source:d:\github\clearemptydir\main.cpp
+	<windows.h>
+	<commctrl.h>
+	<stdio.h>
+	"resource.h"
+
+1472131270 d:\github\clearemptydir\resource.h
+
+1472131270 source:d:\github\clearemptydir\resource.rc
+	<windows.h>
+	<commctrl.h>
+	<richedit.h>
+	"resource.h"
+
