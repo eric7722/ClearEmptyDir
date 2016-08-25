@@ -17,7 +17,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_CLOSE:
         {
-            EndDialog(hwndDlg, 0);
+          EndDialog(hwndDlg, 0);
         }
         return TRUE;
 
