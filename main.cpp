@@ -2,8 +2,13 @@
 #include <commctrl.h>
 #include <stdio.h>
 #include "resource.h"
+#include <Commdlg.h>
+
+
 
 HINSTANCE hInst;
+
+void ListDir();
 
 BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -15,18 +20,16 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         return TRUE;
 
-    case WM_CLOSE:
+        case WM_CLOSE:
         {
           EndDialog(hwndDlg, 0);
         }
         return TRUE;
 
-    case WM_COMMAND:
+        case WM_COMMAND:
         {
-            switch(LOWORD(wParam))
-            {
 
-            }
+            ListDir();
         }
         return TRUE;
     }
@@ -36,19 +39,13 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 void ListDir()
 {
-
-}
-
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
-{
     WIN32_FIND_DATA _fdata;
     HANDLE hFind = INVALID_HANDLE_VALUE;
-    LARGE_INTEGER filesize;
+    OPENFILENAME of_name;
 
-    hInst=hInstance;
-    InitCommonControls();
+    GetOpenFileName(&of_name);
+    hFind = FindFirstFile("D:\\GitHub\\KKJ\\*",&_fdata);
 
-    hFind = FindFirstFile("D:\\GitHub\\KKJ",&_fdata);
     if (INVALID_HANDLE_VALUE == hFind)
     {
      //   DisplayErrorBox(TEXT("FindFirstFile"));
@@ -68,6 +65,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
       }
    }
    while (FindNextFile(hFind, &_fdata) != 0);
+   FindClose(hFind);
+
+}
+
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+{
+
+    hInst=hInstance;
+    InitCommonControls();
+
+
+
 
 
     return DialogBox(hInst, MAKEINTRESOURCE(DLG_MAIN), NULL, (DLGPROC)DlgMain);
