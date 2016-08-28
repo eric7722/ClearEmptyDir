@@ -41,9 +41,26 @@ void ListDir()
 {
     WIN32_FIND_DATA _fdata;
     HANDLE hFind = INVALID_HANDLE_VALUE;
-    OPENFILENAME of_name;
+    OPENFILENAME ofn;
+    BOOL bOpenFile=FALSE;
+    // a another memory buffer to contain the file name
+    char szFile[100] ;
 
-    GetOpenFileName(&of_name);
+    // open a file name
+	ZeroMemory( &ofn , sizeof( ofn));
+	ofn.lStructSize = sizeof ( ofn );
+	ofn.hwndOwner = NULL  ;
+	ofn.lpstrFile = szFile ;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof( szFile );
+	ofn.lpstrFilter = NULL; //"All\0*.*\0Text\0*.TXT\0";
+	ofn.nFilterIndex =1;
+	ofn.lpstrFileTitle = NULL ;
+	ofn.nMaxFileTitle = 0 ;
+	ofn.lpstrInitialDir=NULL ;
+	ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
+
+    bOpenFile = GetOpenFileName(&ofn);
     hFind = FindFirstFile("D:\\GitHub\\KKJ\\*",&_fdata);
 
     if (INVALID_HANDLE_VALUE == hFind)
@@ -74,10 +91,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
     hInst=hInstance;
     InitCommonControls();
-
-
-
-
 
     return DialogBox(hInst, MAKEINTRESOURCE(DLG_MAIN), NULL, (DLGPROC)DlgMain);
 }
