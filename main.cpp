@@ -3,12 +3,12 @@
 #include <stdio.h>
 #include "resource.h"
 #include <Commdlg.h>
-
+#include <Shlobj.h>
 
 
 HINSTANCE hInst;
 
-void ListDir();
+void ListDir(HWND hWnd);
 
 BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -29,7 +29,7 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_COMMAND:
         {
 
-            ListDir();
+            ListDir(hwndDlg);
         }
         return TRUE;
     }
@@ -37,53 +37,19 @@ BOOL CALLBACK DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-void ListDir()
+void ListDir(HWND hWnd)
 {
-    WIN32_FIND_DATA _fdata;
-    HANDLE hFind = INVALID_HANDLE_VALUE;
-    OPENFILENAME ofn;
-    BOOL bOpenFile=FALSE;
-    // a another memory buffer to contain the file name
-    char szFile[100] ;
+    char _path[MAX_PATH];
+    BROWSEINFO bi = {0};
+    bi.hwndOwner = hWnd;
+    bi.lpszTitle = "Select folder";
+    LPITEMIDLIST pIIL = SHBrowseForFolder(&bi);
 
-    // open a file name
-	ZeroMemory( &ofn , sizeof( ofn));
-	ofn.lStructSize = sizeof ( ofn );
-	ofn.hwndOwner = NULL  ;
-	ofn.lpstrFile = szFile ;
-	ofn.lpstrFile[0] = '\0';
-	ofn.nMaxFile = sizeof( szFile );
-	ofn.lpstrFilter = NULL; //"All\0*.*\0Text\0*.TXT\0";
-	ofn.nFilterIndex =1;
-	ofn.lpstrFileTitle = NULL ;
-	ofn.nMaxFileTitle = 0 ;
-	ofn.lpstrInitialDir=NULL ;
-	ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
-
-    bOpenFile = GetOpenFileName(&ofn);
-    hFind = FindFirstFile("D:\\GitHub\\KKJ\\*",&_fdata);
-
-    if (INVALID_HANDLE_VALUE == hFind)
+    if(pIIL)
     {
-     //   DisplayErrorBox(TEXT("FindFirstFile"));
-        //return dwError;
+        SHGetPathFromIDList(pIIL, _path );
+        MessageBox(NULL,_path,"NAME",MB_ICONWARNING | MB_DEFBUTTON2);
     }
-
-    do
-   {
-      if (_fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-      {
-         //_tprintf(TEXT("  %s   <DIR>\n"), ffd.cFileName);
-         MessageBox(NULL,_fdata.cFileName,"NAME",MB_ICONWARNING | MB_DEFBUTTON2);
-      }
-      else
-      {
-         MessageBox(NULL,_fdata.cFileName,"NAME",MB_ICONWARNING | MB_DEFBUTTON2);
-      }
-   }
-   while (FindNextFile(hFind, &_fdata) != 0);
-   FindClose(hFind);
-
 }
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)

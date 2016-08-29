@@ -13,16 +13,17 @@
 	<richedit.h>
 	"resource.h"
 
-1472347378 source:d:\github\clearemptydir\main.cpp
+1472477968 source:d:\github\clearemptydir\main.cpp
 	<windows.h>
 	<commctrl.h>
 	<stdio.h>
 	"resource.h"
 	<Commdlg.h>
+	<Shlobj.h>
 
-1472303832 d:\github\clearemptydir\resource.h
+1472221370 d:\github\clearemptydir\resource.h
 
-1472303832 source:d:\github\clearemptydir\resource.rc
+1472221370 source:d:\github\clearemptydir\resource.rc
 	<windows.h>
 	<commctrl.h>
 	<richedit.h>
